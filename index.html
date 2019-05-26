@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <link href="main.css" type="text/css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    </head>
+    <!-- The REQUIRMENTSGUIDE.txt will tell you where to look for the project related requirements-->
+    <!--This page contains the use of the DOM to change html found between the script tags at the end of this code.-->
+    <body>
+        
+        <nav>
+            <!--A logo I created for fun-->
+            <!--Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> https://logomakr.com/8KWPCQ-->
+            <img src="Logo.png" alt="Push Positivity" title="Push Positivity " width="200px" height="30px">
+            
+            <!--Nav bar options linking to other html pages-->
+            <ul>
+                <!--Throughout the pages the class "current-page" is used to underline the nav option you are currently at.-->
+                <li class="nav-options"><a href="#" class="current-page">Home</a></li>
+                <li class="nav-options"><a href="login.html" >Login</a></li>
+                <li class="nav-options"><a href="aboutme.html">Stats</a></li>
+                <li class="nav-options"><a href="emailme.html">Email me</a></li>
+                <li ><a href="findfollow.html">Find &amp; Follow</a></li>
+            </ul>
+        </nav>
+        
+        <div class="home">
+            
+            <div><img class="home-profile-img"src="home-profile%20(Custom).jpg" alt="Picture of me while I was supposed to be studying." title="Picture of me while I was supposed to be studying." align="left">
+            <p class="first-p"><span id = "headLetter">H</span>ey <span id = "name"></span>, I&#39;m Seán. 
+                Welcome to my site where I share information on a topic very close to my heart. This site focuses on
+                educating people on mental health and shows the stats of suicide rates both in ireland over the last few
+                years and during the world in 2016. </p>
+            
+            <p class="second-p">This is a serious issue and I wanted my project to be based on something that mattered to me
+                as well as ticking boxes for an asignment. This is sure to make some people nervous or uncomfortable I assure
+                you that was not my intention. I solely want to educate and discuss.</p>
+                
+            <p class="third-p">Also should you or anyone you know needs help in this area please check out
+                 <a href="https://www.pieta.ie/">pieta house here</a>. Lets try and help each other out.</p>            
+                
+            <p class="last-p">- Seán</p>
+            </div>
+        </div>
+    
+    </body>
+
+    <script>
+        //This function asks for a persons name and greats them within the text of the home page
+        function yourName() {
+        var txt
+        var Name = prompt("Hi there! Please enter your name:", "Enter name here ...");
+        // If the enter no name or just hit enter to get rid of the box it says "hey there" instead of their name.
+        if (Name == null || Name == "" || Name == "Enter name here ...") {
+        txt = "there";
+        } else {
+        // Otherwise the txt variable is set to name
+        txt = Name;
+        }
+        // inputs the name into the paragraph
+        document.getElementById("name").innerHTML = txt;
+        }
+        // Runs this function when page loads.
+        window.onload = yourName();
+
+    </script>
+</html>

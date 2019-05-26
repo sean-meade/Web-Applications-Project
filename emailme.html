@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <link href="main.css" type="text/css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <!-- The REQUIRMENTSGUIDE.txt will tell you where to look for the project related requirements-->
+    <!-- This page contains my style change through the DOM using the Colour function between the script tags at the very end.-->
+    <body id = "background">
+        
+        <nav>
+            <!--A logo I created for fun-->
+            <!--Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> https://logomakr.com/8KWPCQ-->
+            <img src="Logo.png" alt="Push Positivity" title="Push Positivity " width="200px" height="30px">
+            
+            <!--Nav bar options linking to other html pages-->
+            <ul>
+                <li class="nav-options"><a href="index.html">Home</a></li>
+                <li class="nav-options"><a href="login.html" >Login</a></li>
+                <li class="nav-options"><a href="aboutme.html">Stats</a></li>
+                <li class="nav-options"><a href="#" class="current-page">Email me</a></li>
+                <li><a href="findfollow.html">Find &amp; Follow</a></li>
+            </ul>
+        </nav>
+        
+        <!-- A form to send a message to a set email address. Each input takes a type, name, size and max character length-->
+        <div class="form-container">
+            <!-- The hr (horizontal rule), br (break) and label (seperate the different segments of the form) tags are all used to format the form to make it presentable-->
+            <hr>
+        <form action="" method="get">
+            <legend>
+                Send Me a Message:
+            </legend>
+            <br>
+            <label>
+                Your Name:
+                <!-- This input takes text and labels it "name" this name can not be longer than 100 characters (t'would have to be a pretty big name I guess-->
+                <input type="text" name="name" size="30" maxlength="100">
+            </label>
+            <br>
+            <br>
+            <label>
+                Your Email:
+                <!-- This input takes an email and lables it "email" again can't be longer then 100 characters-->
+                <input type="email" name="email" size="30" maxlength="100">
+            </label>
+            <br>
+            <br>
+            <label for="message">
+                Your Message or Question:
+            </label>
+            <br>
+            <br>
+            <!-- Lastly this is a special type of input for higher inputs and is given the id of message to retrive if needed-->
+            <textarea rows="4" cols="40" id="message">
+            </textarea>
+        </form> 
+            <hr>
+        </div>
+    </body>
+
+    <script>
+    // This function Colour prompts the user to input a colour. The choices are blue, red or pink.
+    function Colour() {
+        var colour
+        var inputC = prompt("Please eneter favourite between blue, red & pink", "Enter colour here ...");
+        if (inputC == "blue" || inputC == "red" || inputC == "pink") {
+            // If they choose one of these colours the variable colour is set to that colour
+            colour = inputC;
+        } else {
+            // If not the colour is automatically set to blue
+            colour = "blue";
+        }
+        // Then the background colour is set to the chosen colour
+        document.getElementById("background").style.backgroundColor = colour;
+        }
+        // This function is called when the page loads
+        window.onload = Colour();
+    </script>
+
+</html>

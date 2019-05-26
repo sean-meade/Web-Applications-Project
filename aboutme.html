@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>About me</title>
+        <meta charset="utf-8">
+        <link href="main.css" type="text/css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+    </head>
+    <!-- The REQUIRMENTSGUIDE.txt will tell you where to look for the project related requirements-->
+    <!-- This page contains the 2 data visualizations one from CSV the other from an array. Both cen be interacted with by the user.-->
+    <body>
+        
+        <nav>
+            <!--A logo I created for fun-->
+            <!--Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> https://logomakr.com/8KWPCQ-->
+            <img src="Logo.png" alt="Push Positivity" title="Push Positivity " width="200px" height="30px">
+            
+            <!--Nav bar options linking to other html pages-->
+            <ul>
+                <li class="nav-options"><a href="index.html" >Home</a></li>
+                <li class="nav-options"><a href="login.html" >Login</a></li>
+                <li class="nav-options"><a href="#" class="current-page">Stats</a></li>
+                <li class="nav-options"><a href="emailme.html">Email me</a></li>
+                <li ><a href="findfollow.html">Find &amp; Follow</a></li>
+            </ul>
+
+        </nav>
+    
+        <div class="home" >
+            <!--Ireland graph-->
+            <div class="input">
+                <h1>Suicide Rates in Ireland</h1>
+                Select Chart Height:
+                <!--Options to choose for the size of the chart-->
+                <select id="barHeight">
+                        <option value="300">300 Pixels</option>
+                        <option value="600">600 Pixels</option>
+                        <option value="900">900 Pixels</option>
+                </select>
+                Select Duration Time:
+                <!--Options to choose type of transition-->
+                <select id="Transition">
+                        <option value="1000">1000</option>
+                        <option value="2000">2000</option>
+                        <option value="3000">3000</option>
+                </select>
+                <!-- Option to choose the colour-->
+                Select Chart Colour: <input type="color" id="colourChart">
+                <button onclick="createChart()">Create Chart</button>
+                <div id="graph1">
+
+                </div>
+            </div>
+            <!--World graph-->
+            <div class="input">
+                <h1>Suicide Rates Worldwide</h1>
+                Select Chart Height:
+                <select id="barHeight2">
+                        <option value="300">300 Pixels</option>
+                        <option value="600">600 Pixels</option>
+                        <option value="900">900 Pixels</option>
+                </select>
+                Select Duration Time:
+                <!--Options to choose type of transition-->
+                <select id="Transition2">
+                        <option value="1000">1000</option>
+                        <option value="2000">2000</option>
+                        <option value="3000">3000</option>
+                </select>
+                Select Chart Colour: <input type="color" id="colourChart2">
+                <button onclick="createChart2()">Create Chart</button>
+                <div id="graph2">
+
+                </div>
+                </div>
+        </div>
+
+
+    </body>
+
+            
+</html>
+
+<script TYPE="text/javascript">
+
+
+function createChart(){
+// inport Suicide rate data
+d3.csv("suicideDataH.csv").then(function(data){
+                console.log(data);
+    
+            // Values for bar chart
+            // The ID barheight is used to collect the value chosen for the height by the user
+            var height = document.getElementById("barHeight").value;
+            var width = 500;
+            var dataCount = data.length;
+            var gap = 3;
+            var barColour = document.getElementById("colourChart").value;
+            var trans = document.getElementById("Transition").value;
+    
+            // Convert to numbers
+            data.forEach(function(d){
+                d.Amount = Number(d.Amount);
+            })
+    
+            // Create a scale for Y
+            var yScale = d3.scaleLinear()
+                .domain([0, d3.max(data, function(d){
+                    return d.Amount;
+                })])
+                .range([height, 0]);
+    
+            // Create a scale for X
+            var xScale = d3.scaleBand()
+                .domain(data.map(function(d){
+                    return d.Year;
+                }))
+                .range([0, width]);
+            
+            // Create y axis
+            var yAxis = d3.axisLeft()
+                .scale(yScale);
+    
+            // Create x axis
+            var xAxis = d3.axisBottom()
+                .scale(xScale);
+            
+            // delete any graphs previously saved bu using to graph1 id to specify
+            d3.select("#graph1").selectAll("*").remove();
+
+            // Create an SVG Container using to graph1 id to specify where
+            var svgContainer = d3.select("#graph1").append("svg")
+                .attr("width", 1000)
+                .attr("height", 1000);
+            
+            // Create a rectangle
+            var myRectangle = svgContainer.selectAll("rect")
+                .data(data);
+    
+            // Add Attributes to rectangle
+            myRectangle.enter()
+                .append("rect")
+                    // Transition state collected from Transition ID
+                    // Set attributes to control the animation
+                    .attr("fill", "black")
+                    .attr("x", function(d, i){
+                        return (50 + (i*(width/dataCount)));
+                    })
+                    .attr("y", function(d){
+                        return yScale(d.Amount);
+                    })
+                    .attr("width", (width/dataCount - gap))
+                    .transition()
+                    .duration(trans)
+                    .delay(400)
+                    .ease(d3.easeElasticOut)
+
+                    // Sets the starting x coordinate for each bar
+                    .attr("x", function(d, i){
+                        return (50 + (i*(width/dataCount)));
+                    })
+                    // Sets the starting y coordinate for each bar
+                    .attr("y", function(d){
+                        return yScale(d.Amount);
+                    })
+                    // Sets the width for each bar
+                    .attr("width", (width/dataCount - gap))
+                    // Sets the height for each bar
+                    .attr("height", function(d){
+                        return height - yScale(d.Amount)
+                    })
+                    // fills in colour with input colour
+                    .attr("fill", barColour);
+            
+            // Places values along the y-axis
+            svgContainer.append("g")
+                    .attr("transform", "translate(45, 0)")
+                    .call(yAxis);
+            
+            // Places values along the x-axis
+            svgContainer.append("g")
+                    .attr("transform", "translate(50, "+ height +")")
+                    .call(xAxis)
+                    .selectAll("text")
+                        .attr("transform", "rotate(60)")
+                        .attr("text-anchor", "start")
+                        .attr("x", "9")
+                        .attr("y", "3");
+            });
+}
+
+function createChart2(){
+    // Set values of array
+    const data = [
+                ["10-14 yrs", 9368],
+                ["15-19 yrs", 52750], 
+                ["20-24 yrs", 78691], 
+                ["25-29 yrs", 81284], 
+                ["10-29yrs", 222093]
+            ];
+
+    // Values for bar chart
+    // The ID barheight is used to collect the value chosen for the height by the user
+    var height = document.getElementById("barHeight2").value;
+    var width = 500;
+    var dataCount = data.length;
+    var gap = 3;
+    var barColour2 = document.getElementById("colourChart2").value;
+    var trans = document.getElementById("Transition2").value;
+
+
+    // Create a scale for Y
+    var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, function(d, i){
+                    return data[i][1];
+                })])
+        .range([height, 0]);
+
+    // Create a scale for X
+    var xScale = d3.scaleBand()
+        .domain(data.map(function(d, i){
+            return data[i][0];
+        }))
+        .range([0, width]);
+
+    // Create y axis
+    var yAxis = d3.axisLeft()
+        .scale(yScale);
+
+    // Create x axis
+    var xAxis = d3.axisBottom()
+        .scale(xScale);
+
+    // delete any graphs previously saved bu using to graph2 id to specify
+    d3.select("#graph2").selectAll("*").remove();
+
+    // Create an SVG Container
+    var svgContainer = d3.select("#graph2").append("svg")
+        .attr("width", 1000)
+        .attr("height", 1000);
+
+    // Create a rectangle
+    var myRectangle = svgContainer.selectAll("rect")
+        .data(data);
+
+    // Add Attributes to rectangle
+    myRectangle.enter()
+        .append("rect")
+            // Transition state collected from Transition ID
+            // Set attributes to control the animation
+            .attr("fill", "black")
+            .attr("x", function(d, i){
+                return (50 + (i*(width/dataCount)));
+            })
+            .attr("y", function(d){
+                return yScale(d.Amount);
+            })
+            .attr("width", (width/dataCount - gap))
+            .transition()
+            .duration(trans)
+            .delay(400)
+            .ease(d3.easeElasticOut)
+            // Sets the starting x coordinate for each bar
+            .attr("x", function(d, i){
+                return (50 + (i*(width/dataCount)));
+            })
+            // Sets the starting y coordinate for each bar
+            .attr("y", function(d, i){
+                return yScale(data[i][1]);
+            })
+            // Sets the width for each bar
+            .attr("width", (width/dataCount - gap))
+            // Sets the height for each bar
+            .attr("height", function(d, i){
+                return height - yScale(data[i][1])
+            })
+            // fills in colour with input colour
+            .attr("fill", barColour2);
+
+    // Places values along the y-axis
+    svgContainer.append("g")
+    .attr("transform", "translate(45, 0)")
+    .call(yAxis);
+
+    // Places values along the x-axis
+    svgContainer.append("g")
+            .attr("transform", "translate(50, "+ height +")")
+            .call(xAxis)
+            .selectAll("text")
+                .attr("text-anchor", "centre")
+                .attr("x", "9")
+                .attr("y", "15");
+                }
+    </script>    
